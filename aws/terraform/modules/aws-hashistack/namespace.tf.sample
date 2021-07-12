@@ -1,0 +1,6 @@
+resource "nomad_namespace" "hashistack" {
+  depends_on = [null_resource.wait_for_nomad_api]
+  name        = "hashistack"
+  description = "Shared development environment."
+}
+

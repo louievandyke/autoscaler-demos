@@ -1,0 +1,1055 @@
+{
+  "version": 4,
+  "terraform_version": "0.13.4",
+  "serial": 181,
+  "lineage": "98e0bb8d-9a18-201d-4912-27801eea85af",
+  "outputs": {
+    "ip_addresses": {
+      "value": "\nServer IPs:\n * instance hashistack-server-1 - Public: 18.215.62.218, Private: 172.31.1.48\n\n\nTo connect, add your private key and SSH into any client or server with\n`ssh ubuntu@PUBLIC_IP`. You can test the integrity of the cluster by running:\n\n  $ consul members\n  $ nomad server members\n  $ nomad node status\n\nThe Nomad UI can be accessed at http://hashistack-nomad-server-2023329830.us-east-1.elb.amazonaws.com:4646/ui\nThe Consul UI can be accessed at http://hashistack-nomad-server-2023329830.us-east-1.elb.amazonaws.com:8500/ui\nGrafana dashboard can be accessed at http://hashistack-nomad-client-208520632.us-east-1.elb.amazonaws.com:3000/d/AQphTqmMk/demo?orgId=1\u0026refresh=5s\nTraefik can be accessed at http://hashistack-nomad-client-208520632.us-east-1.elb.amazonaws.com:8081\nPrometheus can be accessed at http://hashistack-nomad-client-208520632.us-east-1.elb.amazonaws.com:9090\nWebapp can be accessed at http://hashistack-nomad-client-208520632.us-east-1.elb.amazonaws.com:80\n\nCLI environment variables:\nexport NOMAD_CLIENT_DNS=http://hashistack-nomad-client-208520632.us-east-1.elb.amazonaws.com\nexport NOMAD_ADDR=http://hashistack-nomad-server-2023329830.us-east-1.elb.amazonaws.com:4646\n\n",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "nomad_client",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1474532532",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"ec2:DescribeInstances\",\n        \"autoscaling:UpdateAutoScalingGroup\",\n        \"autoscaling:TerminateInstanceInAutoScalingGroup\",\n        \"autoscaling:DescribeScalingActivities\",\n        \"autoscaling:DescribeAutoScalingGroups\",\n        \"autoscaling:CreateOrUpdateTags\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "override_json": null,
+            "policy_id": null,
+            "source_json": null,
+            "statement": [
+              {
+                "actions": [
+                  "autoscaling:CreateOrUpdateTags",
+                  "autoscaling:DescribeAutoScalingGroups",
+                  "autoscaling:DescribeScalingActivities",
+                  "autoscaling:TerminateInstanceInAutoScalingGroup",
+                  "autoscaling:UpdateAutoScalingGroup",
+                  "ec2:DescribeInstances"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [],
+                "resources": [
+                  "*"
+                ],
+                "sid": ""
+              }
+            ],
+            "version": "2012-10-17"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "nomad_client_assume",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1903849331",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}",
+            "override_json": null,
+            "policy_id": null,
+            "source_json": null,
+            "statement": [
+              {
+                "actions": [
+                  "sts:AssumeRole"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [
+                  {
+                    "identifiers": [
+                      "ec2.amazonaws.com"
+                    ],
+                    "type": "Service"
+                  }
+                ],
+                "resources": [],
+                "sid": ""
+              }
+            ],
+            "version": "2012-10-17"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "nomad_server",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "2069168386",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"ec2:DescribeTags\",\n        \"ec2:DescribeInstances\",\n        \"autoscaling:DescribeAutoScalingGroups\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "override_json": null,
+            "policy_id": null,
+            "source_json": null,
+            "statement": [
+              {
+                "actions": [
+                  "autoscaling:DescribeAutoScalingGroups",
+                  "ec2:DescribeInstances",
+                  "ec2:DescribeTags"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [],
+                "resources": [
+                  "*"
+                ],
+                "sid": ""
+              }
+            ],
+            "version": "2012-10-17"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "nomad_server_assume",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1903849331",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}",
+            "override_json": null,
+            "policy_id": null,
+            "source_json": null,
+            "statement": [
+              {
+                "actions": [
+                  "sts:AssumeRole"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [
+                  {
+                    "identifiers": [
+                      "ec2.amazonaws.com"
+                    ],
+                    "type": "Service"
+                  }
+                ],
+                "resources": [],
+                "sid": ""
+              }
+            ],
+            "version": "2012-10-17"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "data",
+      "type": "aws_vpc",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:267023797923:vpc/vpc-271a045d",
+            "cidr_block": "172.31.0.0/16",
+            "cidr_block_associations": [
+              {
+                "association_id": "vpc-cidr-assoc-e4e70c8b",
+                "cidr_block": "172.31.0.0/16",
+                "state": "associated"
+              }
+            ],
+            "default": true,
+            "dhcp_options_id": "dopt-27c3785d",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "filter": null,
+            "id": "vpc-271a045d",
+            "instance_tenancy": "default",
+            "ipv6_association_id": null,
+            "ipv6_cidr_block": null,
+            "main_route_table_id": "rtb-d36500ad",
+            "owner_id": "267023797923",
+            "state": "available",
+            "tags": {
+              "Name": "aji_hcp_consul_vault"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "data",
+      "type": "template_file",
+      "name": "nomad_autoscaler_jobspec",
+      "provider": "provider[\"registry.terraform.io/hashicorp/template\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "filename": null,
+            "id": "f78ef3fd1f3fbe1d44ac58eefe3056fc9698135e39042f41211f6e03109e05f1",
+            "rendered": "job \"autoscaler\" {\n  datacenters = [\"dc1\"]\n\n  group \"autoscaler\" {\n    count = 1\n\n    network {\n      port \"http\" {}\n    }\n\n    task \"autoscaler\" {\n      driver = \"docker\"\n\n      config {\n        image   = \"hashicorp/nomad-autoscaler:0.3.2\"\n        command = \"nomad-autoscaler\"\n\n        args = [\n          \"agent\",\n          \"-config\",\n          \"${NOMAD_TASK_DIR}/config.hcl\",\n          \"-http-bind-address\",\n          \"0.0.0.0\",\n          \"-http-bind-port\",\n          \"${NOMAD_PORT_http}\",\n          \"-policy-dir\",\n          \"${NOMAD_TASK_DIR}/policies/\",\n        ]\n\n        ports = [\"http\"]\n      }\n\n      template {\n        data = \u003c\u003cEOF\nnomad {\n  address = \"http://{{env \"attr.unique.network.ip-address\" }}:4646\"\n}\n\napm \"prometheus\" {\n  driver = \"prometheus\"\n  config = {\n    address = \"http://{{ range service \"prometheus\" }}{{ .Address }}:{{ .Port }}{{ end }}\"\n  }\n}\n\n# Datadog example template is below. In order to use the example config section\n# you will need to remove the first line \"#\" comments as well as the golang\n# template comment markers which are \"- /*\" and \"*/\".\n#\n# apm \"datadog\" {\n#   driver = \"datadog\"\n#   config = {\n# {{- /* with secret \"secret/autoscaler/datadog\" }}\n#     dd_api_key = \"{{ .Data.data.api_key }}\"\n#     dd_app_key = \"{{ .Data.data.app_key }}\"\n# {{ end */ -}}\n#   }\n# }\n\ntarget \"aws-asg\" {\n  driver = \"aws-asg\"\n  config = {\n    aws_region = \"{{ $x := env \"attr.platform.aws.placement.availability-zone\" }}{{ $length := len $x |subtract 1 }}{{ slice $x 0 $length}}\"\n  }\n}\n\nstrategy \"target-value\" {\n  driver = \"target-value\"\n}\nEOF\n\n        destination = \"${NOMAD_TASK_DIR}/config.hcl\"\n      }\n\n      template {\n        data = \u003c\u003cEOF\nscaling \"cluster_policy\" {\n  enabled = true\n  min     = 1\n  max     = 2\n\n  policy {\n    cooldown            = \"2m\"\n    evaluation_interval = \"1m\"\n\n    check \"cpu_allocated_percentage\" {\n      source = \"prometheus\"\n      query  = \"sum(nomad_client_allocated_cpu{node_class=\\\"hashistack\\\"}*100/(nomad_client_unallocated_cpu{node_class=\\\"hashistack\\\"}+nomad_client_allocated_cpu{node_class=\\\"hashistack\\\"}))/count(nomad_client_allocated_cpu{node_class=\\\"hashistack\\\"})\"\n\n      strategy \"target-value\" {\n        target = 70\n      }\n    }\n    # Datadog example\n    # check \"cpu_allocated_percentage\" {\n    #   source       = \"datadog\"\n    #   query        = \"avg:nomad.client.allocated.cpu{*}/(avg:nomad.client.unallocated.cpu{*}+avg:nomad.client.allocated.cpu{*})*100\"\n    #   query_window = \"2m\"\n    #   strategy \"target-value\" {\n    #     target = 70\n    #   }\n    # }\n\n    check \"mem_allocated_percentage\" {\n      source = \"prometheus\"\n      query  = \"sum(nomad_client_allocated_memory{node_class=\\\"hashistack\\\"}*100/(nomad_client_unallocated_memory{node_class=\\\"hashistack\\\"}+nomad_client_allocated_memory{node_class=\\\"hashistack\\\"}))/count(nomad_client_allocated_memory{node_class=\\\"hashistack\\\"})\"\n\n      strategy \"target-value\" {\n        target = 70\n      }\n    }\n    # Datadog example\n    # check \"memory_allocated_percentage\" {\n    #   source       = \"datadog\"\n    #   query        = \"avg:nomad.client.allocated.memory{*}/(avg:nomad.client.unallocated.memory{*}+avg:nomad.client.allocated.memory{*})*100\"\n    #   query_window = \"2m\"\n    #   strategy \"target-value\" {\n    #     target = 70\n    #   }\n    # }\n\n    target \"aws-asg\" {\n      dry-run             = \"false\"\n      aws_asg_name        = \"lvd-nomad_client-lv\"\n      node_class          = \"hashistack\"\n      node_drain_deadline = \"5m\"\n    }\n  }\n}\nEOF\n\n        destination = \"${NOMAD_TASK_DIR}/policies/hashistack.hcl\"\n      }\n\n      resources {\n        cpu    = 50\n        memory = 128\n      }\n\n      service {\n        name = \"autoscaler\"\n        port = \"http\"\n\n        check {\n          type     = \"http\"\n          path     = \"/v1/health\"\n          interval = \"5s\"\n          timeout  = \"2s\"\n        }\n      }\n    }\n  }\n}\n",
+            "template": "job \"autoscaler\" {\n  datacenters = [\"dc1\"]\n\n  group \"autoscaler\" {\n    count = 1\n\n    network {\n      port \"http\" {}\n    }\n\n    task \"autoscaler\" {\n      driver = \"docker\"\n\n      config {\n        image   = \"${nomad_autoscaler_image}\"\n        command = \"nomad-autoscaler\"\n\n        args = [\n          \"agent\",\n          \"-config\",\n          \"$${NOMAD_TASK_DIR}/config.hcl\",\n          \"-http-bind-address\",\n          \"0.0.0.0\",\n          \"-http-bind-port\",\n          \"$${NOMAD_PORT_http}\",\n          \"-policy-dir\",\n          \"$${NOMAD_TASK_DIR}/policies/\",\n        ]\n\n        ports = [\"http\"]\n      }\n\n      template {\n        data = \u003c\u003cEOF\nnomad {\n  address = \"http://{{env \"attr.unique.network.ip-address\" }}:4646\"\n}\n\napm \"prometheus\" {\n  driver = \"prometheus\"\n  config = {\n    address = \"http://{{ range service \"prometheus\" }}{{ .Address }}:{{ .Port }}{{ end }}\"\n  }\n}\n\n# Datadog example template is below. In order to use the example config section\n# you will need to remove the first line \"#\" comments as well as the golang\n# template comment markers which are \"- /*\" and \"*/\".\n#\n# apm \"datadog\" {\n#   driver = \"datadog\"\n#   config = {\n# {{- /* with secret \"secret/autoscaler/datadog\" }}\n#     dd_api_key = \"{{ .Data.data.api_key }}\"\n#     dd_app_key = \"{{ .Data.data.app_key }}\"\n# {{ end */ -}}\n#   }\n# }\n\ntarget \"aws-asg\" {\n  driver = \"aws-asg\"\n  config = {\n    aws_region = \"{{ $x := env \"attr.platform.aws.placement.availability-zone\" }}{{ $length := len $x |subtract 1 }}{{ slice $x 0 $length}}\"\n  }\n}\n\nstrategy \"target-value\" {\n  driver = \"target-value\"\n}\nEOF\n\n        destination = \"$${NOMAD_TASK_DIR}/config.hcl\"\n      }\n\n      template {\n        data = \u003c\u003cEOF\nscaling \"cluster_policy\" {\n  enabled = true\n  min     = 1\n  max     = 2\n\n  policy {\n    cooldown            = \"2m\"\n    evaluation_interval = \"1m\"\n\n    check \"cpu_allocated_percentage\" {\n      source = \"prometheus\"\n      query  = \"sum(nomad_client_allocated_cpu{node_class=\\\"hashistack\\\"}*100/(nomad_client_unallocated_cpu{node_class=\\\"hashistack\\\"}+nomad_client_allocated_cpu{node_class=\\\"hashistack\\\"}))/count(nomad_client_allocated_cpu{node_class=\\\"hashistack\\\"})\"\n\n      strategy \"target-value\" {\n        target = 70\n      }\n    }\n    # Datadog example\n    # check \"cpu_allocated_percentage\" {\n    #   source       = \"datadog\"\n    #   query        = \"avg:nomad.client.allocated.cpu{*}/(avg:nomad.client.unallocated.cpu{*}+avg:nomad.client.allocated.cpu{*})*100\"\n    #   query_window = \"2m\"\n    #   strategy \"target-value\" {\n    #     target = 70\n    #   }\n    # }\n\n    check \"mem_allocated_percentage\" {\n      source = \"prometheus\"\n      query  = \"sum(nomad_client_allocated_memory{node_class=\\\"hashistack\\\"}*100/(nomad_client_unallocated_memory{node_class=\\\"hashistack\\\"}+nomad_client_allocated_memory{node_class=\\\"hashistack\\\"}))/count(nomad_client_allocated_memory{node_class=\\\"hashistack\\\"})\"\n\n      strategy \"target-value\" {\n        target = 70\n      }\n    }\n    # Datadog example\n    # check \"memory_allocated_percentage\" {\n    #   source       = \"datadog\"\n    #   query        = \"avg:nomad.client.allocated.memory{*}/(avg:nomad.client.unallocated.memory{*}+avg:nomad.client.allocated.memory{*})*100\"\n    #   query_window = \"2m\"\n    #   strategy \"target-value\" {\n    #     target = 70\n    #   }\n    # }\n\n    target \"aws-asg\" {\n      dry-run             = \"false\"\n      aws_asg_name        = \"${client_asg_name}\"\n      node_class          = \"hashistack\"\n      node_drain_deadline = \"5m\"\n    }\n  }\n}\nEOF\n\n        destination = \"$${NOMAD_TASK_DIR}/policies/hashistack.hcl\"\n      }\n\n      resources {\n        cpu    = 50\n        memory = 128\n      }\n\n      service {\n        name = \"autoscaler\"\n        port = \"http\"\n\n        check {\n          type     = \"http\"\n          path     = \"/v1/health\"\n          interval = \"5s\"\n          timeout  = \"2s\"\n        }\n      }\n    }\n  }\n}\n",
+            "vars": {
+              "client_asg_name": "lvd-nomad_client-lv",
+              "nomad_autoscaler_image": "hashicorp/nomad-autoscaler:0.3.2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "data",
+      "type": "template_file",
+      "name": "user_data_client",
+      "provider": "provider[\"registry.terraform.io/hashicorp/template\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "filename": null,
+            "id": "a1f94b3a4379b4a08ea71a96b6f1aa287e903869fbacbb428fffa6aab53e484d",
+            "rendered": "#!/bin/bash\n\nset -e\n\nexec \u003e \u003e(sudo tee /var/log/user-data.log|logger -t user-data -s 2\u003e/dev/console) 2\u003e\u00261\nsudo chmod +x /ops/scripts/client.sh\nsudo bash -c \"NOMAD_BINARY=none CONSUL_BINARY=none  /ops/scripts/client.sh \\\"aws\\\" \\\"provider=aws tag_key=ConsulAutoJoin tag_value=auto-join\\\" \\\"hashistack\\\"\"\nrm -rf /ops/\n",
+            "template": "#!/bin/bash\n\nset -e\n\nexec \u003e \u003e(sudo tee /var/log/user-data.log|logger -t user-data -s 2\u003e/dev/console) 2\u003e\u00261\nsudo chmod +x /ops/scripts/client.sh\nsudo bash -c \"NOMAD_BINARY=${nomad_binary} CONSUL_BINARY=${consul_binary}  /ops/scripts/client.sh \\\"aws\\\" \\\"${retry_join}\\\" \\\"${node_class}\\\"\"\nrm -rf /ops/\n",
+            "vars": {
+              "consul_binary": "none",
+              "node_class": "hashistack",
+              "nomad_binary": "none",
+              "region": "us-east-1",
+              "retry_join": "provider=aws tag_key=ConsulAutoJoin tag_value=auto-join"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "data",
+      "type": "template_file",
+      "name": "user_data_server",
+      "provider": "provider[\"registry.terraform.io/hashicorp/template\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "filename": null,
+            "id": "ddd959a32713771494a9e6d62756c2eee0a01d5a3a535d8a51e8a765856d06bc",
+            "rendered": "#!/bin/bash\n\nset -e\n\nexec \u003e \u003e(sudo tee /var/log/user-data.log|logger -t user-data -s 2\u003e/dev/console) 2\u003e\u00261\nsudo chmod +x /ops/scripts/server.sh\nsudo bash -c \"NOMAD_BINARY=none CONSUL_BINARY=none  /ops/scripts/server.sh \\\"aws\\\" \\\"1\\\" \\\"provider=aws tag_key=ConsulAutoJoin tag_value=auto-join\\\"\"\nrm -rf /ops/\n",
+            "template": "#!/bin/bash\n\nset -e\n\nexec \u003e \u003e(sudo tee /var/log/user-data.log|logger -t user-data -s 2\u003e/dev/console) 2\u003e\u00261\nsudo chmod +x /ops/scripts/server.sh\nsudo bash -c \"NOMAD_BINARY=${nomad_binary} CONSUL_BINARY=${consul_binary}  /ops/scripts/server.sh \\\"aws\\\" \\\"${server_count}\\\" \\\"${retry_join}\\\"\"\nrm -rf /ops/\n",
+            "vars": {
+              "consul_binary": "none",
+              "nomad_binary": "none",
+              "region": "us-east-1",
+              "retry_join": "provider=aws tag_key=ConsulAutoJoin tag_value=auto-join",
+              "server_count": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_autoscaling_group",
+      "name": "nomad_client",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": []
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_iam_instance_profile",
+      "name": "nomad_client",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::267023797923:instance-profile/lvd20210703051057401700000002",
+            "create_date": "2021-07-03T05:10:57Z",
+            "id": "lvd20210703051057401700000002",
+            "name": "lvd20210703051057401700000002",
+            "name_prefix": "lvd",
+            "path": "/",
+            "role": "lvd20210703051056561500000001",
+            "roles": [],
+            "unique_id": "AIPAT4K63Z2R2YLPWC3AA"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.aws_iam_role.nomad_client",
+            "module.hashistack_cluster.data.aws_iam_policy_document.nomad_client_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_iam_instance_profile",
+      "name": "nomad_server",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::267023797923:instance-profile/lvd20210703051059185200000004",
+            "create_date": "2021-07-03T05:10:59Z",
+            "id": "lvd20210703051059185200000004",
+            "name": "lvd20210703051059185200000004",
+            "name_prefix": "lvd",
+            "path": "/",
+            "role": "lvd20210703051058351600000003",
+            "roles": [],
+            "unique_id": "AIPAT4K63Z2RYVAZS2HWB"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.aws_iam_role.nomad_server",
+            "module.hashistack_cluster.data.aws_iam_policy_document.nomad_server_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "nomad_client",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::267023797923:role/lvd20210703051056561500000001",
+            "assume_role_policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}",
+            "create_date": "2021-07-03T05:10:56Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "lvd20210703051056561500000001",
+            "max_session_duration": 3600,
+            "name": "lvd20210703051056561500000001",
+            "name_prefix": "lvd",
+            "path": "/",
+            "permissions_boundary": null,
+            "tags": null,
+            "unique_id": "AROAT4K63Z2RV5IVOYJLR"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.data.aws_iam_policy_document.nomad_client_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "nomad_server",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::267023797923:role/lvd20210703051058351600000003",
+            "assume_role_policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}",
+            "create_date": "2021-07-03T05:10:58Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "lvd20210703051058351600000003",
+            "max_session_duration": 3600,
+            "name": "lvd20210703051058351600000003",
+            "name_prefix": "lvd",
+            "path": "/",
+            "permissions_boundary": null,
+            "tags": null,
+            "unique_id": "AROAT4K63Z2RQPD4LBNUB"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.data.aws_iam_policy_document.nomad_server_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "nomad_client",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "lvd20210703051056561500000001:noamd-client",
+            "name": "noamd-client",
+            "name_prefix": null,
+            "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"ec2:DescribeInstances\",\n        \"autoscaling:UpdateAutoScalingGroup\",\n        \"autoscaling:TerminateInstanceInAutoScalingGroup\",\n        \"autoscaling:DescribeScalingActivities\",\n        \"autoscaling:DescribeAutoScalingGroups\",\n        \"autoscaling:CreateOrUpdateTags\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "role": "lvd20210703051056561500000001"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.aws_iam_role.nomad_client",
+            "module.hashistack_cluster.data.aws_iam_policy_document.nomad_client",
+            "module.hashistack_cluster.data.aws_iam_policy_document.nomad_client_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "nomad_server",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "lvd20210703051058351600000003:nomad-server",
+            "name": "nomad-server",
+            "name_prefix": null,
+            "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"ec2:DescribeTags\",\n        \"ec2:DescribeInstances\",\n        \"autoscaling:DescribeAutoScalingGroups\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "role": "lvd20210703051058351600000003"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.aws_iam_role.nomad_server",
+            "module.hashistack_cluster.data.aws_iam_policy_document.nomad_server",
+            "module.hashistack_cluster.data.aws_iam_policy_document.nomad_server_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "nomad_server",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "ami": "ami-055a9718c96450853",
+            "arn": "arn:aws:ec2:us-east-1:267023797923:instance/i-02b20ca4619040a88",
+            "associate_public_ip_address": true,
+            "availability_zone": "us-east-1c",
+            "cpu_core_count": 1,
+            "cpu_threads_per_core": 2,
+            "credit_specification": [
+              {
+                "cpu_credits": "unlimited"
+              }
+            ],
+            "disable_api_termination": false,
+            "ebs_block_device": [],
+            "ebs_optimized": false,
+            "ephemeral_block_device": [],
+            "get_password_data": false,
+            "hibernation": false,
+            "host_id": null,
+            "iam_instance_profile": "hashistack20210702230401228000000004",
+            "id": "i-02b20ca4619040a88",
+            "instance_initiated_shutdown_behavior": null,
+            "instance_state": "running",
+            "instance_type": "t3.small",
+            "ipv6_address_count": 0,
+            "ipv6_addresses": [],
+            "key_name": "lvd-nomad",
+            "metadata_options": [
+              {
+                "http_endpoint": "enabled",
+                "http_put_response_hop_limit": 1,
+                "http_tokens": "optional"
+              }
+            ],
+            "monitoring": false,
+            "network_interface": [],
+            "network_interface_id": null,
+            "outpost_arn": "",
+            "password_data": "",
+            "placement_group": "",
+            "primary_network_interface_id": "eni-0726b481812fdc15d",
+            "private_dns": "ip-172-31-1-48.ec2.internal",
+            "private_ip": "172.31.1.48",
+            "public_dns": "ec2-18-215-62-218.compute-1.amazonaws.com",
+            "public_ip": "18.215.62.218",
+            "root_block_device": [
+              {
+                "delete_on_termination": true,
+                "device_name": "/dev/sda1",
+                "encrypted": false,
+                "iops": 100,
+                "kms_key_id": "",
+                "volume_id": "vol-0006052f1f1a7f619",
+                "volume_size": 16,
+                "volume_type": "gp2"
+              }
+            ],
+            "security_groups": [
+              "hashistack"
+            ],
+            "source_dest_check": true,
+            "subnet_id": "subnet-e6cb0980",
+            "tags": {
+              "ConsulAutoJoin": "auto-join",
+              "Name": "hashistack-server-1",
+              "OwnerEmail": "lvandyke@hashicorp.com",
+              "OwnerName": "lvandyke"
+            },
+            "tenancy": "default",
+            "timeouts": null,
+            "user_data": "976c523c4778ed2dc62f552f66a64ff5c0e698f9",
+            "user_data_base64": null,
+            "volume_tags": {},
+            "vpc_security_group_ids": [
+              "sg-071e63882c610ea25"
+            ]
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMCwidXBkYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "module.hashistack_cluster.aws_iam_instance_profile.nomad_server",
+            "module.hashistack_cluster.aws_security_group.client_lb",
+            "module.hashistack_cluster.aws_security_group.primary",
+            "module.hashistack_cluster.aws_security_group.server_lb",
+            "module.hashistack_cluster.data.aws_vpc.default",
+            "module.hashistack_cluster.data.template_file.user_data_server"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_launch_template",
+      "name": "nomad_client",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:267023797923:launch-template/lt-028861f06a1e7ef76",
+            "block_device_mappings": [
+              {
+                "device_name": "/dev/xvdd",
+                "ebs": [
+                  {
+                    "delete_on_termination": "true",
+                    "encrypted": "",
+                    "iops": 0,
+                    "kms_key_id": "",
+                    "snapshot_id": "",
+                    "volume_size": 50,
+                    "volume_type": "gp2"
+                  }
+                ],
+                "no_device": "",
+                "virtual_name": ""
+              }
+            ],
+            "capacity_reservation_specification": [],
+            "cpu_options": [],
+            "credit_specification": [],
+            "default_version": 1,
+            "description": "",
+            "disable_api_termination": false,
+            "ebs_optimized": "",
+            "elastic_gpu_specifications": [],
+            "elastic_inference_accelerator": [],
+            "hibernation_options": [],
+            "iam_instance_profile": [
+              {
+                "arn": "",
+                "name": "hashistack20210702230401227900000003"
+              }
+            ],
+            "id": "lt-028861f06a1e7ef76",
+            "image_id": "ami-055a9718c96450853",
+            "instance_initiated_shutdown_behavior": "",
+            "instance_market_options": [],
+            "instance_type": "t3.small",
+            "kernel_id": "",
+            "key_name": "lvd-nomad",
+            "latest_version": 2,
+            "license_specification": [],
+            "metadata_options": [],
+            "monitoring": [],
+            "name": "nomad-client20210702231128150900000001",
+            "name_prefix": "nomad-client",
+            "network_interfaces": [],
+            "placement": [],
+            "ram_disk_id": "",
+            "security_group_names": [],
+            "tag_specifications": [
+              {
+                "resource_type": "instance",
+                "tags": {
+                  "ConsulAutoJoin": "auto-join",
+                  "Name": "hashistack-client"
+                }
+              }
+            ],
+            "tags": {},
+            "update_default_version": null,
+            "user_data": "IyEvYmluL2Jhc2gKCnNldCAtZQoKZXhlYyA+ID4oc3VkbyB0ZWUgL3Zhci9sb2cvdXNlci1kYXRhLmxvZ3xsb2dnZXIgLXQgdXNlci1kYXRhIC1zIDI+L2Rldi9jb25zb2xlKSAyPiYxCnN1ZG8gY2htb2QgK3ggL29wcy9zY3JpcHRzL2NsaWVudC5zaApzdWRvIGJhc2ggLWMgIk5PTUFEX0JJTkFSWT1ub25lIENPTlNVTF9CSU5BUlk9bm9uZSAgL29wcy9zY3JpcHRzL2NsaWVudC5zaCBcImF3c1wiIFwicHJvdmlkZXI9YXdzIHRhZ19rZXk9Q29uc3VsQXV0b0pvaW4gdGFnX3ZhbHVlPWF1dG8tam9pblwiIFwiaGFzaGlzdGFja1wiIgpybSAtcmYgL29wcy8K",
+            "vpc_security_group_ids": [
+              "sg-071e63882c610ea25"
+            ]
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.aws_iam_instance_profile.nomad_client",
+            "module.hashistack_cluster.aws_security_group.client_lb",
+            "module.hashistack_cluster.aws_security_group.primary",
+            "module.hashistack_cluster.aws_security_group.server_lb",
+            "module.hashistack_cluster.data.aws_vpc.default",
+            "module.hashistack_cluster.data.template_file.user_data_client"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "client_lb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:267023797923:security-group/sg-002de1babbc6780c4",
+            "description": "Managed by Terraform",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-002de1babbc6780c4",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "72.197.144.63/32"
+                ],
+                "description": "",
+                "from_port": 3000,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 3000
+              },
+              {
+                "cidr_blocks": [
+                  "72.197.144.63/32"
+                ],
+                "description": "",
+                "from_port": 8081,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 8081
+              },
+              {
+                "cidr_blocks": [
+                  "72.197.144.63/32"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              },
+              {
+                "cidr_blocks": [
+                  "72.197.144.63/32"
+                ],
+                "description": "",
+                "from_port": 9090,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 9090
+              }
+            ],
+            "name": "hashistack-client-lb",
+            "name_prefix": null,
+            "owner_id": "267023797923",
+            "revoke_rules_on_delete": false,
+            "tags": {},
+            "timeouts": null,
+            "vpc_id": "vpc-271a045d"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.hashistack_cluster.data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "server_lb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:267023797923:security-group/sg-0522c20fdf7095f08",
+            "description": "Managed by Terraform",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0522c20fdf7095f08",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "72.197.144.63/32"
+                ],
+                "description": "",
+                "from_port": 4646,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 4646
+              },
+              {
+                "cidr_blocks": [
+                  "72.197.144.63/32"
+                ],
+                "description": "",
+                "from_port": 8500,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 8500
+              }
+            ],
+            "name": "hashistack-server-lb",
+            "name_prefix": null,
+            "owner_id": "267023797923",
+            "revoke_rules_on_delete": false,
+            "tags": {},
+            "timeouts": null,
+            "vpc_id": "vpc-271a045d"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.hashistack_cluster.data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_cluster",
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "nomad_autoscaler_jobspec",
+      "provider": "provider[\"registry.terraform.io/hashicorp/null\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "8451548421527202607",
+            "triggers": null
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.data.template_file.nomad_autoscaler_jobspec"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_jobs",
+      "mode": "data",
+      "type": "local_file",
+      "name": "grafana_dashboard",
+      "provider": "provider[\"registry.terraform.io/hashicorp/local\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "content": "{\n  \"annotations\": {\n    \"list\": [\n      {\n        \"builtIn\": 1,\n        \"datasource\": \"-- Grafana --\",\n        \"enable\": true,\n        \"hide\": true,\n        \"iconColor\": \"rgba(0, 211, 255, 1)\",\n        \"name\": \"Annotations \u0026 Alerts\",\n        \"type\": \"dashboard\"\n      }\n    ]\n  },\n  \"editable\": true,\n  \"gnetId\": null,\n  \"graphTooltip\": 0,\n  \"links\": [],\n  \"panels\": [\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": null,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {}\n        },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"gridPos\": {\n        \"h\": 9,\n        \"w\": 12,\n        \"x\": 0,\n        \"y\": 0\n      },\n      \"hiddenSeries\": false,\n      \"id\": 2,\n      \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n        \"min\": false,\n        \"show\": true,\n        \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\": 1,\n      \"nullPointMode\": \"null\",\n      \"options\": {\n        \"dataLinks\": []\n      },\n      \"percentage\": false,\n      \"pointradius\": 2,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"nomad_nomad_job_summary_running{task_group=\\\"demo\\\"}\",\n          \"interval\": \"\",\n          \"legendFormat\": \"running_allocs_demo\",\n          \"refId\": \"A\"\n        },\n        {\n          \"expr\": \"sum(traefik_entrypoint_open_connections{entrypoint=\\\"webapp\\\"} / scalar(nomad_nomad_job_summary_running{task_group=\\\"demo\\\"}))\",\n          \"interval\": \"\",\n          \"legendFormat\": \"current_connections\",\n          \"refId\": \"B\"\n        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n      \"title\": \"Webapp Instances / Open Connections\",\n      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        },\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": true,\n      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": null,\n      \"description\": \"\",\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {}\n        },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"gridPos\": {\n        \"h\": 9,\n        \"w\": 12,\n        \"x\": 12,\n        \"y\": 0\n      },\n      \"hiddenSeries\": false,\n      \"id\": 6,\n      \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n        \"min\": false,\n        \"show\": true,\n        \"total\": false,\n        \"values\": false\n      },\n      \"lines\": false,\n      \"linewidth\": 1,\n      \"nullPointMode\": \"null\",\n      \"options\": {\n        \"dataLinks\": []\n      },\n      \"percentage\": false,\n      \"pointradius\": 2,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\": true,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"sum by(code) (rate(traefik_entrypoint_requests_total{entrypoint=\\\"webapp\\\"}[30s]))\",\n          \"interval\": \"\",\n          \"legendFormat\": \"{{code}}\",\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n      \"title\": \"Webapp Response Codes\",\n      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        },\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": null,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {}\n        },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"gridPos\": {\n        \"h\": 9,\n        \"w\": 18,\n        \"x\": 0,\n        \"y\": 9\n      },\n      \"hiddenSeries\": false,\n      \"id\": 4,\n      \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n        \"min\": false,\n        \"show\": true,\n        \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\": 1,\n      \"nullPointMode\": \"null\",\n      \"options\": {\n        \"dataLinks\": []\n      },\n      \"percentage\": false,\n      \"pointradius\": 2,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"sum(nomad_client_unallocated_cpu{node_class=\\\"hashistack\\\"} * 100 / (nomad_client_unallocated_cpu{node_class=\\\"hashistack\\\"} + nomad_client_allocated_cpu{node_class=\\\"hashistack\\\"})) / count(nomad_client_unallocated_cpu)\",\n          \"interval\": \"\",\n          \"legendFormat\": \"unallocated_cpu_hashistack\",\n          \"refId\": \"A\"\n        },\n        {\n          \"expr\": \"sum(nomad_client_unallocated_memory{node_class=\\\"hashistack\\\"} * 100 / (nomad_client_unallocated_memory{node_class=\\\"hashistack\\\"} + nomad_client_allocated_memory{node_class=\\\"hashistack\\\"})) / count(nomad_client_unallocated_memory)\",\n          \"interval\": \"\",\n          \"legendFormat\": \"unallocated_mem_hashistack\",\n          \"refId\": \"B\"\n        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n      \"title\": \"HashiStack Client Unallocated\",\n      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": \"0.0\",\n          \"show\": true\n        },\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"datasource\": null,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {},\n          \"mappings\": [],\n          \"thresholds\": {\n            \"mode\": \"absolute\",\n            \"steps\": [\n              {\n                \"color\": \"green\",\n                \"value\": null\n              },\n              {\n                \"color\": \"red\",\n                \"value\": 80\n              }\n            ]\n          }\n        },\n        \"overrides\": []\n      },\n      \"gridPos\": {\n        \"h\": 9,\n        \"w\": 6,\n        \"x\": 18,\n        \"y\": 9\n      },\n      \"id\": 14,\n      \"options\": {\n        \"colorMode\": \"value\",\n        \"graphMode\": \"none\",\n        \"justifyMode\": \"auto\",\n        \"orientation\": \"auto\",\n        \"reduceOptions\": {\n          \"calcs\": [\n            \"last\"\n          ],\n          \"values\": false\n        }\n      },\n      \"pluginVersion\": \"7.0.0\",\n      \"targets\": [\n        {\n          \"expr\": \"count(nomad_client_unallocated_cpu)\",\n          \"interval\": \"\",\n          \"legendFormat\": \"\",\n          \"refId\": \"A\"\n        }\n      ],\n      \"timeFrom\": null,\n      \"timeShift\": null,\n      \"title\": \"Hashistack Running Clients\",\n      \"type\": \"stat\"\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": null,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {}\n        },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 6,\n        \"x\": 0,\n        \"y\": 18\n      },\n      \"hiddenSeries\": false,\n      \"id\": 8,\n      \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n        \"min\": false,\n        \"show\": false,\n        \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\": 1,\n      \"nullPointMode\": \"null\",\n      \"options\": {\n        \"dataLinks\": []\n      },\n      \"percentage\": false,\n      \"pointradius\": 2,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"nomad_client_host_cpu_total{node_class=\\\"hashistack\\\"}\",\n          \"interval\": \"\",\n          \"legendFormat\": \"{{node_class}}_{{cpu}}\",\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n      \"title\": \"HashiStack Client CPU\",\n      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": false,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        },\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": false\n        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": null,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {}\n        },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 6,\n        \"x\": 6,\n        \"y\": 18\n      },\n      \"hiddenSeries\": false,\n      \"id\": 10,\n      \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n        \"min\": false,\n        \"show\": false,\n        \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\": 1,\n      \"nullPointMode\": \"null\",\n      \"options\": {\n        \"dataLinks\": []\n      },\n      \"percentage\": false,\n      \"pointradius\": 2,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"nomad_client_host_memory_used{node_class=\\\"hashistack\\\"}\",\n          \"interval\": \"\",\n          \"legendFormat\": \"\",\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n      \"title\": \"HashiStack Client Memory\",\n      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": false,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"format\": \"bytes\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        },\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": null,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {}\n        },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 12,\n        \"x\": 12,\n        \"y\": 18\n      },\n      \"hiddenSeries\": false,\n      \"id\": 12,\n      \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n        \"min\": false,\n        \"show\": true,\n        \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\": 1,\n      \"nullPointMode\": \"null\",\n      \"options\": {\n        \"dataLinks\": []\n      },\n      \"percentage\": false,\n      \"pointradius\": 2,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"sum(nomad_client_allocated_cpu{node_class=\\\"hashistack\\\"} +  nomad_client_unallocated_cpu{node_class=\\\"hashistack\\\"})\",\n          \"interval\": \"\",\n          \"legendFormat\": \"hashistack_available_cpu\",\n          \"refId\": \"A\"\n        },\n        {\n          \"expr\": \"sum(nomad_client_allocated_memory{node_class=\\\"hashistack\\\"} +  nomad_client_unallocated_memory{node_class=\\\"hashistack\\\"})\",\n          \"interval\": \"\",\n          \"legendFormat\": \"hashistack_available_memory\",\n          \"refId\": \"B\"\n        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n      \"title\": \"Hashistack Total Resources\",\n      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        },\n        {\n          \"format\": \"short\",\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n    }\n  ],\n  \"refresh\": \"\",\n  \"schemaVersion\": 25,\n  \"style\": \"dark\",\n  \"tags\": [],\n  \"templating\": {\n    \"list\": []\n  },\n  \"time\": {\n    \"from\": \"now-15m\",\n    \"to\": \"now\"\n  },\n  \"timepicker\": {\n    \"refresh_intervals\": [\n      \"10s\",\n      \"30s\",\n      \"1m\",\n      \"5m\",\n      \"15m\",\n      \"30m\",\n      \"1h\",\n      \"2h\",\n      \"1d\"\n    ]\n  },\n  \"timezone\": \"\",\n  \"title\": \"Demo\",\n  \"uid\": \"AQphTqmMk\",\n  \"version\": 1\n}\n",
+            "content_base64": "ewogICJhbm5vdGF0aW9ucyI6IHsKICAgICJsaXN0IjogWwogICAgICB7CiAgICAgICAgImJ1aWx0SW4iOiAxLAogICAgICAgICJkYXRhc291cmNlIjogIi0tIEdyYWZhbmEgLS0iLAogICAgICAgICJlbmFibGUiOiB0cnVlLAogICAgICAgICJoaWRlIjogdHJ1ZSwKICAgICAgICAiaWNvbkNvbG9yIjogInJnYmEoMCwgMjExLCAyNTUsIDEpIiwKICAgICAgICAibmFtZSI6ICJBbm5vdGF0aW9ucyAmIEFsZXJ0cyIsCiAgICAgICAgInR5cGUiOiAiZGFzaGJvYXJkIgogICAgICB9CiAgICBdCiAgfSwKICAiZWRpdGFibGUiOiB0cnVlLAogICJnbmV0SWQiOiBudWxsLAogICJncmFwaFRvb2x0aXAiOiAwLAogICJsaW5rcyI6IFtdLAogICJwYW5lbHMiOiBbCiAgICB7CiAgICAgICJhbGlhc0NvbG9ycyI6IHt9LAogICAgICAiYmFycyI6IGZhbHNlLAogICAgICAiZGFzaExlbmd0aCI6IDEwLAogICAgICAiZGFzaGVzIjogZmFsc2UsCiAgICAgICJkYXRhc291cmNlIjogbnVsbCwKICAgICAgImZpZWxkQ29uZmlnIjogewogICAgICAgICJkZWZhdWx0cyI6IHsKICAgICAgICAgICJjdXN0b20iOiB7fQogICAgICAgIH0sCiAgICAgICAgIm92ZXJyaWRlcyI6IFtdCiAgICAgIH0sCiAgICAgICJmaWxsIjogMSwKICAgICAgImZpbGxHcmFkaWVudCI6IDAsCiAgICAgICJncmlkUG9zIjogewogICAgICAgICJoIjogOSwKICAgICAgICAidyI6IDEyLAogICAgICAgICJ4IjogMCwKICAgICAgICAieSI6IDAKICAgICAgfSwKICAgICAgImhpZGRlblNlcmllcyI6IGZhbHNlLAogICAgICAiaWQiOiAyLAogICAgICAibGVnZW5kIjogewogICAgICAgICJhdmciOiBmYWxzZSwKICAgICAgICAiY3VycmVudCI6IGZhbHNlLAogICAgICAgICJtYXgiOiBmYWxzZSwKICAgICAgICAibWluIjogZmFsc2UsCiAgICAgICAgInNob3ciOiB0cnVlLAogICAgICAgICJ0b3RhbCI6IGZhbHNlLAogICAgICAgICJ2YWx1ZXMiOiBmYWxzZQogICAgICB9LAogICAgICAibGluZXMiOiB0cnVlLAogICAgICAibGluZXdpZHRoIjogMSwKICAgICAgIm51bGxQb2ludE1vZGUiOiAibnVsbCIsCiAgICAgICJvcHRpb25zIjogewogICAgICAgICJkYXRhTGlua3MiOiBbXQogICAgICB9LAogICAgICAicGVyY2VudGFnZSI6IGZhbHNlLAogICAgICAicG9pbnRyYWRpdXMiOiAyLAogICAgICAicG9pbnRzIjogZmFsc2UsCiAgICAgICJyZW5kZXJlciI6ICJmbG90IiwKICAgICAgInNlcmllc092ZXJyaWRlcyI6IFtdLAogICAgICAic3BhY2VMZW5ndGgiOiAxMCwKICAgICAgInN0YWNrIjogZmFsc2UsCiAgICAgICJzdGVwcGVkTGluZSI6IGZhbHNlLAogICAgICAidGFyZ2V0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZXhwciI6ICJub21hZF9ub21hZF9qb2Jfc3VtbWFyeV9ydW5uaW5ne3Rhc2tfZ3JvdXA9XCJkZW1vXCJ9IiwKICAgICAgICAgICJpbnRlcnZhbCI6ICIiLAogICAgICAgICAgImxlZ2VuZEZvcm1hdCI6ICJydW5uaW5nX2FsbG9jc19kZW1vIiwKICAgICAgICAgICJyZWZJZCI6ICJBIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgImV4cHIiOiAic3VtKHRyYWVmaWtfZW50cnlwb2ludF9vcGVuX2Nvbm5lY3Rpb25ze2VudHJ5cG9pbnQ9XCJ3ZWJhcHBcIn0gLyBzY2FsYXIobm9tYWRfbm9tYWRfam9iX3N1bW1hcnlfcnVubmluZ3t0YXNrX2dyb3VwPVwiZGVtb1wifSkpIiwKICAgICAgICAgICJpbnRlcnZhbCI6ICIiLAogICAgICAgICAgImxlZ2VuZEZvcm1hdCI6ICJjdXJyZW50X2Nvbm5lY3Rpb25zIiwKICAgICAgICAgICJyZWZJZCI6ICJCIgogICAgICAgIH0KICAgICAgXSwKICAgICAgInRocmVzaG9sZHMiOiBbXSwKICAgICAgInRpbWVGcm9tIjogbnVsbCwKICAgICAgInRpbWVSZWdpb25zIjogW10sCiAgICAgICJ0aW1lU2hpZnQiOiBudWxsLAogICAgICAidGl0bGUiOiAiV2ViYXBwIEluc3RhbmNlcyAvIE9wZW4gQ29ubmVjdGlvbnMiLAogICAgICAidG9vbHRpcCI6IHsKICAgICAgICAic2hhcmVkIjogdHJ1ZSwKICAgICAgICAic29ydCI6IDAsCiAgICAgICAgInZhbHVlX3R5cGUiOiAiaW5kaXZpZHVhbCIKICAgICAgfSwKICAgICAgInR5cGUiOiAiZ3JhcGgiLAogICAgICAieGF4aXMiOiB7CiAgICAgICAgImJ1Y2tldHMiOiBudWxsLAogICAgICAgICJtb2RlIjogInRpbWUiLAogICAgICAgICJuYW1lIjogbnVsbCwKICAgICAgICAic2hvdyI6IHRydWUsCiAgICAgICAgInZhbHVlcyI6IFtdCiAgICAgIH0sCiAgICAgICJ5YXhlcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZm9ybWF0IjogInNob3J0IiwKICAgICAgICAgICJsYWJlbCI6IG51bGwsCiAgICAgICAgICAibG9nQmFzZSI6IDEsCiAgICAgICAgICAibWF4IjogbnVsbCwKICAgICAgICAgICJtaW4iOiBudWxsLAogICAgICAgICAgInNob3ciOiB0cnVlCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAiZm9ybWF0IjogInNob3J0IiwKICAgICAgICAgICJsYWJlbCI6IG51bGwsCiAgICAgICAgICAibG9nQmFzZSI6IDEsCiAgICAgICAgICAibWF4IjogbnVsbCwKICAgICAgICAgICJtaW4iOiBudWxsLAogICAgICAgICAgInNob3ciOiB0cnVlCiAgICAgICAgfQogICAgICBdLAogICAgICAieWF4aXMiOiB7CiAgICAgICAgImFsaWduIjogZmFsc2UsCiAgICAgICAgImFsaWduTGV2ZWwiOiBudWxsCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJhbGlhc0NvbG9ycyI6IHt9LAogICAgICAiYmFycyI6IHRydWUsCiAgICAgICJkYXNoTGVuZ3RoIjogMTAsCiAgICAgICJkYXNoZXMiOiBmYWxzZSwKICAgICAgImRhdGFzb3VyY2UiOiBudWxsLAogICAgICAiZGVzY3JpcHRpb24iOiAiIiwKICAgICAgImZpZWxkQ29uZmlnIjogewogICAgICAgICJkZWZhdWx0cyI6IHsKICAgICAgICAgICJjdXN0b20iOiB7fQogICAgICAgIH0sCiAgICAgICAgIm92ZXJyaWRlcyI6IFtdCiAgICAgIH0sCiAgICAgICJmaWxsIjogMSwKICAgICAgImZpbGxHcmFkaWVudCI6IDAsCiAgICAgICJncmlkUG9zIjogewogICAgICAgICJoIjogOSwKICAgICAgICAidyI6IDEyLAogICAgICAgICJ4IjogMTIsCiAgICAgICAgInkiOiAwCiAgICAgIH0sCiAgICAgICJoaWRkZW5TZXJpZXMiOiBmYWxzZSwKICAgICAgImlkIjogNiwKICAgICAgImxlZ2VuZCI6IHsKICAgICAgICAiYXZnIjogZmFsc2UsCiAgICAgICAgImN1cnJlbnQiOiBmYWxzZSwKICAgICAgICAibWF4IjogZmFsc2UsCiAgICAgICAgIm1pbiI6IGZhbHNlLAogICAgICAgICJzaG93IjogdHJ1ZSwKICAgICAgICAidG90YWwiOiBmYWxzZSwKICAgICAgICAidmFsdWVzIjogZmFsc2UKICAgICAgfSwKICAgICAgImxpbmVzIjogZmFsc2UsCiAgICAgICJsaW5ld2lkdGgiOiAxLAogICAgICAibnVsbFBvaW50TW9kZSI6ICJudWxsIiwKICAgICAgIm9wdGlvbnMiOiB7CiAgICAgICAgImRhdGFMaW5rcyI6IFtdCiAgICAgIH0sCiAgICAgICJwZXJjZW50YWdlIjogZmFsc2UsCiAgICAgICJwb2ludHJhZGl1cyI6IDIsCiAgICAgICJwb2ludHMiOiBmYWxzZSwKICAgICAgInJlbmRlcmVyIjogImZsb3QiLAogICAgICAic2VyaWVzT3ZlcnJpZGVzIjogW10sCiAgICAgICJzcGFjZUxlbmd0aCI6IDEwLAogICAgICAic3RhY2siOiB0cnVlLAogICAgICAic3RlcHBlZExpbmUiOiBmYWxzZSwKICAgICAgInRhcmdldHMiOiBbCiAgICAgICAgewogICAgICAgICAgImV4cHIiOiAic3VtIGJ5KGNvZGUpIChyYXRlKHRyYWVmaWtfZW50cnlwb2ludF9yZXF1ZXN0c190b3RhbHtlbnRyeXBvaW50PVwid2ViYXBwXCJ9WzMwc10pKSIsCiAgICAgICAgICAiaW50ZXJ2YWwiOiAiIiwKICAgICAgICAgICJsZWdlbmRGb3JtYXQiOiAie3tjb2RlfX0iLAogICAgICAgICAgInJlZklkIjogIkEiCiAgICAgICAgfQogICAgICBdLAogICAgICAidGhyZXNob2xkcyI6IFtdLAogICAgICAidGltZUZyb20iOiBudWxsLAogICAgICAidGltZVJlZ2lvbnMiOiBbXSwKICAgICAgInRpbWVTaGlmdCI6IG51bGwsCiAgICAgICJ0aXRsZSI6ICJXZWJhcHAgUmVzcG9uc2UgQ29kZXMiLAogICAgICAidG9vbHRpcCI6IHsKICAgICAgICAic2hhcmVkIjogdHJ1ZSwKICAgICAgICAic29ydCI6IDAsCiAgICAgICAgInZhbHVlX3R5cGUiOiAiaW5kaXZpZHVhbCIKICAgICAgfSwKICAgICAgInR5cGUiOiAiZ3JhcGgiLAogICAgICAieGF4aXMiOiB7CiAgICAgICAgImJ1Y2tldHMiOiBudWxsLAogICAgICAgICJtb2RlIjogInRpbWUiLAogICAgICAgICJuYW1lIjogbnVsbCwKICAgICAgICAic2hvdyI6IHRydWUsCiAgICAgICAgInZhbHVlcyI6IFtdCiAgICAgIH0sCiAgICAgICJ5YXhlcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZm9ybWF0IjogInNob3J0IiwKICAgICAgICAgICJsYWJlbCI6IG51bGwsCiAgICAgICAgICAibG9nQmFzZSI6IDEsCiAgICAgICAgICAibWF4IjogbnVsbCwKICAgICAgICAgICJtaW4iOiBudWxsLAogICAgICAgICAgInNob3ciOiB0cnVlCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAiZm9ybWF0IjogInNob3J0IiwKICAgICAgICAgICJsYWJlbCI6IG51bGwsCiAgICAgICAgICAibG9nQmFzZSI6IDEsCiAgICAgICAgICAibWF4IjogbnVsbCwKICAgICAgICAgICJtaW4iOiBudWxsLAogICAgICAgICAgInNob3ciOiB0cnVlCiAgICAgICAgfQogICAgICBdLAogICAgICAieWF4aXMiOiB7CiAgICAgICAgImFsaWduIjogZmFsc2UsCiAgICAgICAgImFsaWduTGV2ZWwiOiBudWxsCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJhbGlhc0NvbG9ycyI6IHt9LAogICAgICAiYmFycyI6IGZhbHNlLAogICAgICAiZGFzaExlbmd0aCI6IDEwLAogICAgICAiZGFzaGVzIjogZmFsc2UsCiAgICAgICJkYXRhc291cmNlIjogbnVsbCwKICAgICAgImZpZWxkQ29uZmlnIjogewogICAgICAgICJkZWZhdWx0cyI6IHsKICAgICAgICAgICJjdXN0b20iOiB7fQogICAgICAgIH0sCiAgICAgICAgIm92ZXJyaWRlcyI6IFtdCiAgICAgIH0sCiAgICAgICJmaWxsIjogMSwKICAgICAgImZpbGxHcmFkaWVudCI6IDAsCiAgICAgICJncmlkUG9zIjogewogICAgICAgICJoIjogOSwKICAgICAgICAidyI6IDE4LAogICAgICAgICJ4IjogMCwKICAgICAgICAieSI6IDkKICAgICAgfSwKICAgICAgImhpZGRlblNlcmllcyI6IGZhbHNlLAogICAgICAiaWQiOiA0LAogICAgICAibGVnZW5kIjogewogICAgICAgICJhdmciOiBmYWxzZSwKICAgICAgICAiY3VycmVudCI6IGZhbHNlLAogICAgICAgICJtYXgiOiBmYWxzZSwKICAgICAgICAibWluIjogZmFsc2UsCiAgICAgICAgInNob3ciOiB0cnVlLAogICAgICAgICJ0b3RhbCI6IGZhbHNlLAogICAgICAgICJ2YWx1ZXMiOiBmYWxzZQogICAgICB9LAogICAgICAibGluZXMiOiB0cnVlLAogICAgICAibGluZXdpZHRoIjogMSwKICAgICAgIm51bGxQb2ludE1vZGUiOiAibnVsbCIsCiAgICAgICJvcHRpb25zIjogewogICAgICAgICJkYXRhTGlua3MiOiBbXQogICAgICB9LAogICAgICAicGVyY2VudGFnZSI6IGZhbHNlLAogICAgICAicG9pbnRyYWRpdXMiOiAyLAogICAgICAicG9pbnRzIjogZmFsc2UsCiAgICAgICJyZW5kZXJlciI6ICJmbG90IiwKICAgICAgInNlcmllc092ZXJyaWRlcyI6IFtdLAogICAgICAic3BhY2VMZW5ndGgiOiAxMCwKICAgICAgInN0YWNrIjogZmFsc2UsCiAgICAgICJzdGVwcGVkTGluZSI6IGZhbHNlLAogICAgICAidGFyZ2V0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZXhwciI6ICJzdW0obm9tYWRfY2xpZW50X3VuYWxsb2NhdGVkX2NwdXtub2RlX2NsYXNzPVwiaGFzaGlzdGFja1wifSAqIDEwMCAvIChub21hZF9jbGllbnRfdW5hbGxvY2F0ZWRfY3B1e25vZGVfY2xhc3M9XCJoYXNoaXN0YWNrXCJ9ICsgbm9tYWRfY2xpZW50X2FsbG9jYXRlZF9jcHV7bm9kZV9jbGFzcz1cImhhc2hpc3RhY2tcIn0pKSAvIGNvdW50KG5vbWFkX2NsaWVudF91bmFsbG9jYXRlZF9jcHUpIiwKICAgICAgICAgICJpbnRlcnZhbCI6ICIiLAogICAgICAgICAgImxlZ2VuZEZvcm1hdCI6ICJ1bmFsbG9jYXRlZF9jcHVfaGFzaGlzdGFjayIsCiAgICAgICAgICAicmVmSWQiOiAiQSIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICJleHByIjogInN1bShub21hZF9jbGllbnRfdW5hbGxvY2F0ZWRfbWVtb3J5e25vZGVfY2xhc3M9XCJoYXNoaXN0YWNrXCJ9ICogMTAwIC8gKG5vbWFkX2NsaWVudF91bmFsbG9jYXRlZF9tZW1vcnl7bm9kZV9jbGFzcz1cImhhc2hpc3RhY2tcIn0gKyBub21hZF9jbGllbnRfYWxsb2NhdGVkX21lbW9yeXtub2RlX2NsYXNzPVwiaGFzaGlzdGFja1wifSkpIC8gY291bnQobm9tYWRfY2xpZW50X3VuYWxsb2NhdGVkX21lbW9yeSkiLAogICAgICAgICAgImludGVydmFsIjogIiIsCiAgICAgICAgICAibGVnZW5kRm9ybWF0IjogInVuYWxsb2NhdGVkX21lbV9oYXNoaXN0YWNrIiwKICAgICAgICAgICJyZWZJZCI6ICJCIgogICAgICAgIH0KICAgICAgXSwKICAgICAgInRocmVzaG9sZHMiOiBbXSwKICAgICAgInRpbWVGcm9tIjogbnVsbCwKICAgICAgInRpbWVSZWdpb25zIjogW10sCiAgICAgICJ0aW1lU2hpZnQiOiBudWxsLAogICAgICAidGl0bGUiOiAiSGFzaGlTdGFjayBDbGllbnQgVW5hbGxvY2F0ZWQiLAogICAgICAidG9vbHRpcCI6IHsKICAgICAgICAic2hhcmVkIjogdHJ1ZSwKICAgICAgICAic29ydCI6IDAsCiAgICAgICAgInZhbHVlX3R5cGUiOiAiaW5kaXZpZHVhbCIKICAgICAgfSwKICAgICAgInR5cGUiOiAiZ3JhcGgiLAogICAgICAieGF4aXMiOiB7CiAgICAgICAgImJ1Y2tldHMiOiBudWxsLAogICAgICAgICJtb2RlIjogInRpbWUiLAogICAgICAgICJuYW1lIjogbnVsbCwKICAgICAgICAic2hvdyI6IHRydWUsCiAgICAgICAgInZhbHVlcyI6IFtdCiAgICAgIH0sCiAgICAgICJ5YXhlcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZm9ybWF0IjogInNob3J0IiwKICAgICAgICAgICJsYWJlbCI6IG51bGwsCiAgICAgICAgICAibG9nQmFzZSI6IDEsCiAgICAgICAgICAibWF4IjogbnVsbCwKICAgICAgICAgICJtaW4iOiAiMC4wIiwKICAgICAgICAgICJzaG93IjogdHJ1ZQogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgImZvcm1hdCI6ICJzaG9ydCIsCiAgICAgICAgICAibGFiZWwiOiBudWxsLAogICAgICAgICAgImxvZ0Jhc2UiOiAxLAogICAgICAgICAgIm1heCI6IG51bGwsCiAgICAgICAgICAibWluIjogbnVsbCwKICAgICAgICAgICJzaG93IjogdHJ1ZQogICAgICAgIH0KICAgICAgXSwKICAgICAgInlheGlzIjogewogICAgICAgICJhbGlnbiI6IGZhbHNlLAogICAgICAgICJhbGlnbkxldmVsIjogbnVsbAogICAgICB9CiAgICB9LAogICAgewogICAgICAiZGF0YXNvdXJjZSI6IG51bGwsCiAgICAgICJmaWVsZENvbmZpZyI6IHsKICAgICAgICAiZGVmYXVsdHMiOiB7CiAgICAgICAgICAiY3VzdG9tIjoge30sCiAgICAgICAgICAibWFwcGluZ3MiOiBbXSwKICAgICAgICAgICJ0aHJlc2hvbGRzIjogewogICAgICAgICAgICAibW9kZSI6ICJhYnNvbHV0ZSIsCiAgICAgICAgICAgICJzdGVwcyI6IFsKICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAiY29sb3IiOiAiZ3JlZW4iLAogICAgICAgICAgICAgICAgInZhbHVlIjogbnVsbAogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgImNvbG9yIjogInJlZCIsCiAgICAgICAgICAgICAgICAidmFsdWUiOiA4MAogICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgICAgfQogICAgICAgIH0sCiAgICAgICAgIm92ZXJyaWRlcyI6IFtdCiAgICAgIH0sCiAgICAgICJncmlkUG9zIjogewogICAgICAgICJoIjogOSwKICAgICAgICAidyI6IDYsCiAgICAgICAgIngiOiAxOCwKICAgICAgICAieSI6IDkKICAgICAgfSwKICAgICAgImlkIjogMTQsCiAgICAgICJvcHRpb25zIjogewogICAgICAgICJjb2xvck1vZGUiOiAidmFsdWUiLAogICAgICAgICJncmFwaE1vZGUiOiAibm9uZSIsCiAgICAgICAgImp1c3RpZnlNb2RlIjogImF1dG8iLAogICAgICAgICJvcmllbnRhdGlvbiI6ICJhdXRvIiwKICAgICAgICAicmVkdWNlT3B0aW9ucyI6IHsKICAgICAgICAgICJjYWxjcyI6IFsKICAgICAgICAgICAgImxhc3QiCiAgICAgICAgICBdLAogICAgICAgICAgInZhbHVlcyI6IGZhbHNlCiAgICAgICAgfQogICAgICB9LAogICAgICAicGx1Z2luVmVyc2lvbiI6ICI3LjAuMCIsCiAgICAgICJ0YXJnZXRzIjogWwogICAgICAgIHsKICAgICAgICAgICJleHByIjogImNvdW50KG5vbWFkX2NsaWVudF91bmFsbG9jYXRlZF9jcHUpIiwKICAgICAgICAgICJpbnRlcnZhbCI6ICIiLAogICAgICAgICAgImxlZ2VuZEZvcm1hdCI6ICIiLAogICAgICAgICAgInJlZklkIjogIkEiCiAgICAgICAgfQogICAgICBdLAogICAgICAidGltZUZyb20iOiBudWxsLAogICAgICAidGltZVNoaWZ0IjogbnVsbCwKICAgICAgInRpdGxlIjogIkhhc2hpc3RhY2sgUnVubmluZyBDbGllbnRzIiwKICAgICAgInR5cGUiOiAic3RhdCIKICAgIH0sCiAgICB7CiAgICAgICJhbGlhc0NvbG9ycyI6IHt9LAogICAgICAiYmFycyI6IGZhbHNlLAogICAgICAiZGFzaExlbmd0aCI6IDEwLAogICAgICAiZGFzaGVzIjogZmFsc2UsCiAgICAgICJkYXRhc291cmNlIjogbnVsbCwKICAgICAgImZpZWxkQ29uZmlnIjogewogICAgICAgICJkZWZhdWx0cyI6IHsKICAgICAgICAgICJjdXN0b20iOiB7fQogICAgICAgIH0sCiAgICAgICAgIm92ZXJyaWRlcyI6IFtdCiAgICAgIH0sCiAgICAgICJmaWxsIjogMSwKICAgICAgImZpbGxHcmFkaWVudCI6IDAsCiAgICAgICJncmlkUG9zIjogewogICAgICAgICJoIjogOCwKICAgICAgICAidyI6IDYsCiAgICAgICAgIngiOiAwLAogICAgICAgICJ5IjogMTgKICAgICAgfSwKICAgICAgImhpZGRlblNlcmllcyI6IGZhbHNlLAogICAgICAiaWQiOiA4LAogICAgICAibGVnZW5kIjogewogICAgICAgICJhdmciOiBmYWxzZSwKICAgICAgICAiY3VycmVudCI6IGZhbHNlLAogICAgICAgICJtYXgiOiBmYWxzZSwKICAgICAgICAibWluIjogZmFsc2UsCiAgICAgICAgInNob3ciOiBmYWxzZSwKICAgICAgICAidG90YWwiOiBmYWxzZSwKICAgICAgICAidmFsdWVzIjogZmFsc2UKICAgICAgfSwKICAgICAgImxpbmVzIjogdHJ1ZSwKICAgICAgImxpbmV3aWR0aCI6IDEsCiAgICAgICJudWxsUG9pbnRNb2RlIjogIm51bGwiLAogICAgICAib3B0aW9ucyI6IHsKICAgICAgICAiZGF0YUxpbmtzIjogW10KICAgICAgfSwKICAgICAgInBlcmNlbnRhZ2UiOiBmYWxzZSwKICAgICAgInBvaW50cmFkaXVzIjogMiwKICAgICAgInBvaW50cyI6IGZhbHNlLAogICAgICAicmVuZGVyZXIiOiAiZmxvdCIsCiAgICAgICJzZXJpZXNPdmVycmlkZXMiOiBbXSwKICAgICAgInNwYWNlTGVuZ3RoIjogMTAsCiAgICAgICJzdGFjayI6IGZhbHNlLAogICAgICAic3RlcHBlZExpbmUiOiBmYWxzZSwKICAgICAgInRhcmdldHMiOiBbCiAgICAgICAgewogICAgICAgICAgImV4cHIiOiAibm9tYWRfY2xpZW50X2hvc3RfY3B1X3RvdGFse25vZGVfY2xhc3M9XCJoYXNoaXN0YWNrXCJ9IiwKICAgICAgICAgICJpbnRlcnZhbCI6ICIiLAogICAgICAgICAgImxlZ2VuZEZvcm1hdCI6ICJ7e25vZGVfY2xhc3N9fV97e2NwdX19IiwKICAgICAgICAgICJyZWZJZCI6ICJBIgogICAgICAgIH0KICAgICAgXSwKICAgICAgInRocmVzaG9sZHMiOiBbXSwKICAgICAgInRpbWVGcm9tIjogbnVsbCwKICAgICAgInRpbWVSZWdpb25zIjogW10sCiAgICAgICJ0aW1lU2hpZnQiOiBudWxsLAogICAgICAidGl0bGUiOiAiSGFzaGlTdGFjayBDbGllbnQgQ1BVIiwKICAgICAgInRvb2x0aXAiOiB7CiAgICAgICAgInNoYXJlZCI6IHRydWUsCiAgICAgICAgInNvcnQiOiAwLAogICAgICAgICJ2YWx1ZV90eXBlIjogImluZGl2aWR1YWwiCiAgICAgIH0sCiAgICAgICJ0eXBlIjogImdyYXBoIiwKICAgICAgInhheGlzIjogewogICAgICAgICJidWNrZXRzIjogbnVsbCwKICAgICAgICAibW9kZSI6ICJ0aW1lIiwKICAgICAgICAibmFtZSI6IG51bGwsCiAgICAgICAgInNob3ciOiBmYWxzZSwKICAgICAgICAidmFsdWVzIjogW10KICAgICAgfSwKICAgICAgInlheGVzIjogWwogICAgICAgIHsKICAgICAgICAgICJmb3JtYXQiOiAic2hvcnQiLAogICAgICAgICAgImxhYmVsIjogbnVsbCwKICAgICAgICAgICJsb2dCYXNlIjogMSwKICAgICAgICAgICJtYXgiOiBudWxsLAogICAgICAgICAgIm1pbiI6IG51bGwsCiAgICAgICAgICAic2hvdyI6IHRydWUKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICJmb3JtYXQiOiAic2hvcnQiLAogICAgICAgICAgImxhYmVsIjogbnVsbCwKICAgICAgICAgICJsb2dCYXNlIjogMSwKICAgICAgICAgICJtYXgiOiBudWxsLAogICAgICAgICAgIm1pbiI6IG51bGwsCiAgICAgICAgICAic2hvdyI6IGZhbHNlCiAgICAgICAgfQogICAgICBdLAogICAgICAieWF4aXMiOiB7CiAgICAgICAgImFsaWduIjogZmFsc2UsCiAgICAgICAgImFsaWduTGV2ZWwiOiBudWxsCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJhbGlhc0NvbG9ycyI6IHt9LAogICAgICAiYmFycyI6IGZhbHNlLAogICAgICAiZGFzaExlbmd0aCI6IDEwLAogICAgICAiZGFzaGVzIjogZmFsc2UsCiAgICAgICJkYXRhc291cmNlIjogbnVsbCwKICAgICAgImZpZWxkQ29uZmlnIjogewogICAgICAgICJkZWZhdWx0cyI6IHsKICAgICAgICAgICJjdXN0b20iOiB7fQogICAgICAgIH0sCiAgICAgICAgIm92ZXJyaWRlcyI6IFtdCiAgICAgIH0sCiAgICAgICJmaWxsIjogMSwKICAgICAgImZpbGxHcmFkaWVudCI6IDAsCiAgICAgICJncmlkUG9zIjogewogICAgICAgICJoIjogOCwKICAgICAgICAidyI6IDYsCiAgICAgICAgIngiOiA2LAogICAgICAgICJ5IjogMTgKICAgICAgfSwKICAgICAgImhpZGRlblNlcmllcyI6IGZhbHNlLAogICAgICAiaWQiOiAxMCwKICAgICAgImxlZ2VuZCI6IHsKICAgICAgICAiYXZnIjogZmFsc2UsCiAgICAgICAgImN1cnJlbnQiOiBmYWxzZSwKICAgICAgICAibWF4IjogZmFsc2UsCiAgICAgICAgIm1pbiI6IGZhbHNlLAogICAgICAgICJzaG93IjogZmFsc2UsCiAgICAgICAgInRvdGFsIjogZmFsc2UsCiAgICAgICAgInZhbHVlcyI6IGZhbHNlCiAgICAgIH0sCiAgICAgICJsaW5lcyI6IHRydWUsCiAgICAgICJsaW5ld2lkdGgiOiAxLAogICAgICAibnVsbFBvaW50TW9kZSI6ICJudWxsIiwKICAgICAgIm9wdGlvbnMiOiB7CiAgICAgICAgImRhdGFMaW5rcyI6IFtdCiAgICAgIH0sCiAgICAgICJwZXJjZW50YWdlIjogZmFsc2UsCiAgICAgICJwb2ludHJhZGl1cyI6IDIsCiAgICAgICJwb2ludHMiOiBmYWxzZSwKICAgICAgInJlbmRlcmVyIjogImZsb3QiLAogICAgICAic2VyaWVzT3ZlcnJpZGVzIjogW10sCiAgICAgICJzcGFjZUxlbmd0aCI6IDEwLAogICAgICAic3RhY2siOiBmYWxzZSwKICAgICAgInN0ZXBwZWRMaW5lIjogZmFsc2UsCiAgICAgICJ0YXJnZXRzIjogWwogICAgICAgIHsKICAgICAgICAgICJleHByIjogIm5vbWFkX2NsaWVudF9ob3N0X21lbW9yeV91c2Vke25vZGVfY2xhc3M9XCJoYXNoaXN0YWNrXCJ9IiwKICAgICAgICAgICJpbnRlcnZhbCI6ICIiLAogICAgICAgICAgImxlZ2VuZEZvcm1hdCI6ICIiLAogICAgICAgICAgInJlZklkIjogIkEiCiAgICAgICAgfQogICAgICBdLAogICAgICAidGhyZXNob2xkcyI6IFtdLAogICAgICAidGltZUZyb20iOiBudWxsLAogICAgICAidGltZVJlZ2lvbnMiOiBbXSwKICAgICAgInRpbWVTaGlmdCI6IG51bGwsCiAgICAgICJ0aXRsZSI6ICJIYXNoaVN0YWNrIENsaWVudCBNZW1vcnkiLAogICAgICAidG9vbHRpcCI6IHsKICAgICAgICAic2hhcmVkIjogdHJ1ZSwKICAgICAgICAic29ydCI6IDAsCiAgICAgICAgInZhbHVlX3R5cGUiOiAiaW5kaXZpZHVhbCIKICAgICAgfSwKICAgICAgInR5cGUiOiAiZ3JhcGgiLAogICAgICAieGF4aXMiOiB7CiAgICAgICAgImJ1Y2tldHMiOiBudWxsLAogICAgICAgICJtb2RlIjogInRpbWUiLAogICAgICAgICJuYW1lIjogbnVsbCwKICAgICAgICAic2hvdyI6IGZhbHNlLAogICAgICAgICJ2YWx1ZXMiOiBbXQogICAgICB9LAogICAgICAieWF4ZXMiOiBbCiAgICAgICAgewogICAgICAgICAgImZvcm1hdCI6ICJieXRlcyIsCiAgICAgICAgICAibGFiZWwiOiBudWxsLAogICAgICAgICAgImxvZ0Jhc2UiOiAxLAogICAgICAgICAgIm1heCI6IG51bGwsCiAgICAgICAgICAibWluIjogbnVsbCwKICAgICAgICAgICJzaG93IjogdHJ1ZQogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgImZvcm1hdCI6ICJzaG9ydCIsCiAgICAgICAgICAibGFiZWwiOiBudWxsLAogICAgICAgICAgImxvZ0Jhc2UiOiAxLAogICAgICAgICAgIm1heCI6IG51bGwsCiAgICAgICAgICAibWluIjogbnVsbCwKICAgICAgICAgICJzaG93IjogdHJ1ZQogICAgICAgIH0KICAgICAgXSwKICAgICAgInlheGlzIjogewogICAgICAgICJhbGlnbiI6IGZhbHNlLAogICAgICAgICJhbGlnbkxldmVsIjogbnVsbAogICAgICB9CiAgICB9LAogICAgewogICAgICAiYWxpYXNDb2xvcnMiOiB7fSwKICAgICAgImJhcnMiOiBmYWxzZSwKICAgICAgImRhc2hMZW5ndGgiOiAxMCwKICAgICAgImRhc2hlcyI6IGZhbHNlLAogICAgICAiZGF0YXNvdXJjZSI6IG51bGwsCiAgICAgICJmaWVsZENvbmZpZyI6IHsKICAgICAgICAiZGVmYXVsdHMiOiB7CiAgICAgICAgICAiY3VzdG9tIjoge30KICAgICAgICB9LAogICAgICAgICJvdmVycmlkZXMiOiBbXQogICAgICB9LAogICAgICAiZmlsbCI6IDEsCiAgICAgICJmaWxsR3JhZGllbnQiOiAwLAogICAgICAiZ3JpZFBvcyI6IHsKICAgICAgICAiaCI6IDgsCiAgICAgICAgInciOiAxMiwKICAgICAgICAieCI6IDEyLAogICAgICAgICJ5IjogMTgKICAgICAgfSwKICAgICAgImhpZGRlblNlcmllcyI6IGZhbHNlLAogICAgICAiaWQiOiAxMiwKICAgICAgImxlZ2VuZCI6IHsKICAgICAgICAiYXZnIjogZmFsc2UsCiAgICAgICAgImN1cnJlbnQiOiBmYWxzZSwKICAgICAgICAibWF4IjogZmFsc2UsCiAgICAgICAgIm1pbiI6IGZhbHNlLAogICAgICAgICJzaG93IjogdHJ1ZSwKICAgICAgICAidG90YWwiOiBmYWxzZSwKICAgICAgICAidmFsdWVzIjogZmFsc2UKICAgICAgfSwKICAgICAgImxpbmVzIjogdHJ1ZSwKICAgICAgImxpbmV3aWR0aCI6IDEsCiAgICAgICJudWxsUG9pbnRNb2RlIjogIm51bGwiLAogICAgICAib3B0aW9ucyI6IHsKICAgICAgICAiZGF0YUxpbmtzIjogW10KICAgICAgfSwKICAgICAgInBlcmNlbnRhZ2UiOiBmYWxzZSwKICAgICAgInBvaW50cmFkaXVzIjogMiwKICAgICAgInBvaW50cyI6IGZhbHNlLAogICAgICAicmVuZGVyZXIiOiAiZmxvdCIsCiAgICAgICJzZXJpZXNPdmVycmlkZXMiOiBbXSwKICAgICAgInNwYWNlTGVuZ3RoIjogMTAsCiAgICAgICJzdGFjayI6IGZhbHNlLAogICAgICAic3RlcHBlZExpbmUiOiBmYWxzZSwKICAgICAgInRhcmdldHMiOiBbCiAgICAgICAgewogICAgICAgICAgImV4cHIiOiAic3VtKG5vbWFkX2NsaWVudF9hbGxvY2F0ZWRfY3B1e25vZGVfY2xhc3M9XCJoYXNoaXN0YWNrXCJ9ICsgIG5vbWFkX2NsaWVudF91bmFsbG9jYXRlZF9jcHV7bm9kZV9jbGFzcz1cImhhc2hpc3RhY2tcIn0pIiwKICAgICAgICAgICJpbnRlcnZhbCI6ICIiLAogICAgICAgICAgImxlZ2VuZEZvcm1hdCI6ICJoYXNoaXN0YWNrX2F2YWlsYWJsZV9jcHUiLAogICAgICAgICAgInJlZklkIjogIkEiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAiZXhwciI6ICJzdW0obm9tYWRfY2xpZW50X2FsbG9jYXRlZF9tZW1vcnl7bm9kZV9jbGFzcz1cImhhc2hpc3RhY2tcIn0gKyAgbm9tYWRfY2xpZW50X3VuYWxsb2NhdGVkX21lbW9yeXtub2RlX2NsYXNzPVwiaGFzaGlzdGFja1wifSkiLAogICAgICAgICAgImludGVydmFsIjogIiIsCiAgICAgICAgICAibGVnZW5kRm9ybWF0IjogImhhc2hpc3RhY2tfYXZhaWxhYmxlX21lbW9yeSIsCiAgICAgICAgICAicmVmSWQiOiAiQiIKICAgICAgICB9CiAgICAgIF0sCiAgICAgICJ0aHJlc2hvbGRzIjogW10sCiAgICAgICJ0aW1lRnJvbSI6IG51bGwsCiAgICAgICJ0aW1lUmVnaW9ucyI6IFtdLAogICAgICAidGltZVNoaWZ0IjogbnVsbCwKICAgICAgInRpdGxlIjogIkhhc2hpc3RhY2sgVG90YWwgUmVzb3VyY2VzIiwKICAgICAgInRvb2x0aXAiOiB7CiAgICAgICAgInNoYXJlZCI6IHRydWUsCiAgICAgICAgInNvcnQiOiAwLAogICAgICAgICJ2YWx1ZV90eXBlIjogImluZGl2aWR1YWwiCiAgICAgIH0sCiAgICAgICJ0eXBlIjogImdyYXBoIiwKICAgICAgInhheGlzIjogewogICAgICAgICJidWNrZXRzIjogbnVsbCwKICAgICAgICAibW9kZSI6ICJ0aW1lIiwKICAgICAgICAibmFtZSI6IG51bGwsCiAgICAgICAgInNob3ciOiB0cnVlLAogICAgICAgICJ2YWx1ZXMiOiBbXQogICAgICB9LAogICAgICAieWF4ZXMiOiBbCiAgICAgICAgewogICAgICAgICAgImZvcm1hdCI6ICJzaG9ydCIsCiAgICAgICAgICAibGFiZWwiOiBudWxsLAogICAgICAgICAgImxvZ0Jhc2UiOiAxLAogICAgICAgICAgIm1heCI6IG51bGwsCiAgICAgICAgICAibWluIjogbnVsbCwKICAgICAgICAgICJzaG93IjogdHJ1ZQogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgImZvcm1hdCI6ICJzaG9ydCIsCiAgICAgICAgICAibGFiZWwiOiBudWxsLAogICAgICAgICAgImxvZ0Jhc2UiOiAxLAogICAgICAgICAgIm1heCI6IG51bGwsCiAgICAgICAgICAibWluIjogbnVsbCwKICAgICAgICAgICJzaG93IjogdHJ1ZQogICAgICAgIH0KICAgICAgXSwKICAgICAgInlheGlzIjogewogICAgICAgICJhbGlnbiI6IGZhbHNlLAogICAgICAgICJhbGlnbkxldmVsIjogbnVsbAogICAgICB9CiAgICB9CiAgXSwKICAicmVmcmVzaCI6ICIiLAogICJzY2hlbWFWZXJzaW9uIjogMjUsCiAgInN0eWxlIjogImRhcmsiLAogICJ0YWdzIjogW10sCiAgInRlbXBsYXRpbmciOiB7CiAgICAibGlzdCI6IFtdCiAgfSwKICAidGltZSI6IHsKICAgICJmcm9tIjogIm5vdy0xNW0iLAogICAgInRvIjogIm5vdyIKICB9LAogICJ0aW1lcGlja2VyIjogewogICAgInJlZnJlc2hfaW50ZXJ2YWxzIjogWwogICAgICAiMTBzIiwKICAgICAgIjMwcyIsCiAgICAgICIxbSIsCiAgICAgICI1bSIsCiAgICAgICIxNW0iLAogICAgICAiMzBtIiwKICAgICAgIjFoIiwKICAgICAgIjJoIiwKICAgICAgIjFkIgogICAgXQogIH0sCiAgInRpbWV6b25lIjogIiIsCiAgInRpdGxlIjogIkRlbW8iLAogICJ1aWQiOiAiQVFwaFRxbU1rIiwKICAidmVyc2lvbiI6IDEKfQo=",
+            "filename": "../../../shared/terraform/modules/shared-nomad-jobs/files/grafana_dashboard.json",
+            "id": "853d8440b7aa3ec382c2c7e62f44f3e44f0fe028"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_jobs",
+      "mode": "managed",
+      "type": "nomad_job",
+      "name": "webapp",
+      "provider": "provider[\"registry.terraform.io/hashicorp/nomad\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allocation_ids": [],
+            "datacenters": [
+              "dc1"
+            ],
+            "deployment_id": null,
+            "deployment_status": null,
+            "deregister_on_destroy": true,
+            "deregister_on_id_change": true,
+            "detach": true,
+            "hcl2": [],
+            "id": "webapp",
+            "jobspec": "job \"webapp\" {\n  datacenters = [\"dc1\"]\n\n  group \"demo\" {\n    count = 1\n\n    network {\n      port \"webapp_http\" {}\n      port \"toxiproxy_webapp\" {}\n    }\n\n    scaling {\n      enabled = true\n      min     = 1\n      max     = 20\n\n      policy {\n        cooldown            = \"1m\"\n        evaluation_interval = \"30s\"\n\n        check \"avg_sessions\" {\n          source = \"prometheus\"\n          query  = \"sum(traefik_entrypoint_open_connections{entrypoint=\\\"webapp\\\"})/scalar(nomad_nomad_job_summary_running{task_group=\\\"demo\\\"})\"\n\n          strategy \"target-value\" {\n            target = 10\n          }\n        }\n      }\n    }\n\n    task \"webapp\" {\n      driver = \"docker\"\n\n      config {\n        image = \"hashicorp/demo-webapp-lb-guide\"\n        ports = [\"webapp_http\"]\n      }\n\n      env {\n        PORT    = \"${NOMAD_PORT_webapp_http}\"\n        NODE_IP = \"${NOMAD_IP_webapp_http}\"\n      }\n\n      resources {\n        cpu    = 500\n        memory = 256\n      }\n\n      service {\n        name = \"webapp\"\n        port = \"webapp_http\"\n\n        check {\n          type     = \"http\"\n          path     = \"/\"\n          interval = \"3s\"\n          timeout  = \"1s\"\n        }\n      }\n    }\n\n    task \"toxiproxy\" {\n      driver = \"docker\"\n\n      lifecycle {\n        hook    = \"prestart\"\n        sidecar = true\n      }\n\n      config {\n        image      = \"shopify/toxiproxy:2.1.4\"\n        entrypoint = [\"/entrypoint.sh\"]\n        ports      = [\"toxiproxy_webapp\"]\n\n        volumes = [\n          \"local/entrypoint.sh:/entrypoint.sh\",\n        ]\n      }\n\n      template {\n        data = \u003c\u003cEOH\n#!/bin/sh\n\nset -ex\n\n/go/bin/toxiproxy -host 0.0.0.0  \u0026\n\nwhile ! wget --spider -q http://localhost:8474/version; do\n  echo \"toxiproxy not ready yet\"\n  sleep 0.2\ndone\n\n/go/bin/toxiproxy-cli create webapp -l 0.0.0.0:${NOMAD_PORT_toxiproxy_webapp} -u ${NOMAD_ADDR_webapp_http}\n/go/bin/toxiproxy-cli toxic add -n latency -t latency -a latency=1000 -a jitter=500 webapp\ntail -f /dev/null\n        EOH\n\n        destination = \"local/entrypoint.sh\"\n        perms       = \"755\"\n      }\n\n      resources {\n        cpu    = 100\n        memory = 32\n      }\n\n      service {\n        name = \"toxiproxy-webapp\"\n        port = \"toxiproxy_webapp\"\n\n        tags = [\n          \"traefik.enable=true\",\n          \"traefik.http.routers.webapp.entrypoints=webapp\",\n          \"traefik.http.routers.webapp.rule=Path(`/`)\",\n        ]\n      }\n    }\n  }\n}\n",
+            "json": null,
+            "modify_index": "9",
+            "name": "webapp",
+            "namespace": "default",
+            "policy_override": null,
+            "purge_on_destroy": null,
+            "region": "global",
+            "task_groups": [
+              {
+                "count": 1,
+                "meta": {},
+                "name": "demo",
+                "task": [
+                  {
+                    "driver": "docker",
+                    "meta": {},
+                    "name": "webapp",
+                    "volume_mounts": []
+                  },
+                  {
+                    "driver": "docker",
+                    "meta": {},
+                    "name": "toxiproxy",
+                    "volume_mounts": []
+                  }
+                ],
+                "volumes": []
+              }
+            ],
+            "type": "service"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.aws_elb.nomad_server",
+            "module.hashistack_cluster.aws_iam_instance_profile.nomad_server",
+            "module.hashistack_cluster.aws_instance.nomad_server",
+            "module.hashistack_cluster.aws_security_group.client_lb",
+            "module.hashistack_cluster.aws_security_group.primary",
+            "module.hashistack_cluster.aws_security_group.server_lb",
+            "module.hashistack_cluster.data.aws_vpc.default",
+            "module.hashistack_cluster.data.template_file.user_data_server",
+            "module.hashistack_jobs.null_resource.wait_for_nomad_api"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.hashistack_jobs",
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "wait_for_nomad_api",
+      "provider": "provider[\"registry.terraform.io/hashicorp/null\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "6596930641958104219",
+            "triggers": null
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.hashistack_cluster.aws_elb.nomad_server",
+            "module.hashistack_cluster.aws_iam_instance_profile.nomad_server",
+            "module.hashistack_cluster.aws_instance.nomad_server",
+            "module.hashistack_cluster.aws_security_group.client_lb",
+            "module.hashistack_cluster.aws_security_group.primary",
+            "module.hashistack_cluster.aws_security_group.server_lb",
+            "module.hashistack_cluster.data.aws_vpc.default",
+            "module.hashistack_cluster.data.template_file.user_data_server"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.my_ip_address",
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "contents",
+      "provider": "provider[\"registry.terraform.io/hashicorp/null\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1137950782936438308",
+            "triggers": {
+              "exitstatus": "0",
+              "id": "1937034777133496878",
+              "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    13  100    13    0     0     61      0 --:--:-- --:--:-- --:--:--    61",
+              "stdout": "72.197.144.63"
+            }
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.my_ip_address.null_resource.contents_if_missing",
+            "module.my_ip_address.null_resource.shell",
+            "module.my_ip_address.random_uuid.uuid"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.my_ip_address",
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "contents_if_missing",
+      "provider": "provider[\"registry.terraform.io/hashicorp/null\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1911320510306517006",
+            "triggers": {
+              "exitstatus": "0",
+              "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    13  100    13    0     0     61      0 --:--:-- --:--:-- --:--:--    61",
+              "stdout": "72.197.144.63"
+            }
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.my_ip_address.null_resource.shell",
+            "module.my_ip_address.random_uuid.uuid"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.my_ip_address",
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "shell",
+      "provider": "provider[\"registry.terraform.io/hashicorp/null\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1937034777133496878",
+            "triggers": {
+              "command_chomped": "curl https://ipinfo.io/ip",
+              "command_when_destroy_chomped": ":",
+              "environment_keys": "",
+              "environment_values": "",
+              "random_uuid": "abb64b2f-0ff2-71a8-f5d4-530dd5a58d2d",
+              "sensitive_environment_keys": "",
+              "sensitive_environment_values": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "trigger": "",
+              "working_dir": ""
+            }
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.my_ip_address.random_uuid.uuid"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.my_ip_address",
+      "mode": "managed",
+      "type": "random_uuid",
+      "name": "uuid",
+      "provider": "provider[\"registry.terraform.io/hashicorp/random\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "abb64b2f-0ff2-71a8-f5d4-530dd5a58d2d",
+            "keepers": null,
+            "result": "abb64b2f-0ff2-71a8-f5d4-530dd5a58d2d"
+          },
+          "private": "bnVsbA=="
+        }
+      ]
+    }
+  ]
+}
