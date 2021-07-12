@@ -8,7 +8,7 @@ variable "namespace" {}
 variable "project" {}
 
 variable "stack_name" {
-  default = "lvd"
+  default = "sculpin"
 }
 
 
